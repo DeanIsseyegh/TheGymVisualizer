@@ -1,0 +1,127 @@
+@(userData: UserData)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello Bubble Chart</title>
+  <meta charset="utf-8">
+
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/d3/d3.min.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/d3-transform/src/d3-transform.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/extarray.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/misc.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/micro-observer.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/microplugin/src/microplugin.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/bubble-chart.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/central-click/central-click.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/lines/lines.js"></script>
+ 
+  <style>
+    .bubbleChart {
+      min-width: 100px;
+      max-width: 700px;
+      height: 700px;
+      margin: 0 auto;
+    }
+    .bubbleChart svg{
+      background: #000000;
+    }
+  </style>
+  
+  <script>
+  $(document).ready(function () {
+  var bubbleChart = new d3.svg.BubbleChart({
+    supportResponsive: true,
+    size: 600,
+    innerRadius: 600 / 3.5,
+    radiusMin: 50,
+    data: {
+      items: [
+				{text: "Total Sessions", count: "@userData.totalNumSessions"},
+        {text: "Average Sessions Per Week", count: "@userData.averageNumSessionsPerWeek"},
+        {text: "Average Sessions Per Month", count: "@userData.averageNumSessionsPerMonth"},
+        {text: "Total Time Spent in Gym", count: "@userData.totalSessionLengthMins"},
+        {text: "Average Session Length", count: "@userData.averageSessionLengthMins"},
+        {text: "Days Between First/Last Session", count: "@userData.daysSinceFirstAndLastSession"},
+        {text: "Days Between First Session and Now", count: "@userData.daysSinceFirstSessionAndNow"},
+      ],
+      eval: function (item) {return item.count;},
+      classed: function (item) {return item.text.split(" ").join("");}
+    },
+    plugins: [
+      {
+        name: "central-click",
+        options: {
+          text: "(See more detail)",
+          style: {
+            "font-size": "12px",
+            "font-style": "italic",
+            "font-family": "Source Sans Pro, sans-serif",
+            "text-anchor": "middle",
+            "fill": "white"
+          },
+          attr: {dy: "65px"},
+          centralClick: function() {
+            alert("Here is more details!!");
+          }
+        }
+      },
+      {
+        name: "lines",
+        options: {
+          format: [
+            {
+              textField: "count",
+              classed: {count: true},
+              style: {
+                "font-size": "28px",
+                "font-family": "Source Sans Pro, sans-serif",
+                "text-anchor": "middle",
+                fill: "white"
+              },
+              attr: {
+                dy: "0px",
+                x: function (d) {return d.cx;},
+                y: function (d) {return d.cy;}
+              }
+            },
+            {
+              textField: "text",
+              classed: {text: true},
+              style: {
+                "font-size": "14px",
+                "font-family": "Source Sans Pro, sans-serif",
+                "text-anchor": "middle",
+                fill: "white"
+              },
+              attr: {
+                dy: "20px",
+                x: function (d) {return d.cx;},
+                y: function (d) {return d.cy;}
+              }
+            }
+          ],
+          centralFormat: [
+            {
+              style: {"font-size": "50px"},
+              attr: {}
+            },
+            {
+              style: {"font-size": "30px"},
+              attr: {dy: "40px"}
+            }
+          ]
+        }
+      }]
+  });
+});
+ </script>
+  
+</head>
+<body style="background: #000000">
+<div class="bubbleChart"/>
+</body>
+</html>
