@@ -1,9 +1,17 @@
-  body {
+    body {
     padding-top: 120px;
     padding-bottom: 40px;
     background-color: #eee;
   
   }
+  
+  #warningText {
+	
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
   .btn 
   {
    outline:0;
