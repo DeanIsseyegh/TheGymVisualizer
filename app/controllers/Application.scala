@@ -17,7 +17,7 @@ object Application extends Controller {
   val form = Form(
     tuple(
       "email" -> text,
-      "pin" -> number))
+      "pin" -> text))
 
   def submit = Action { implicit request =>
     println("Submit called")
@@ -27,7 +27,8 @@ object Application extends Controller {
     val userData = mapToUserDataObject(gymUsage)
     Ok(views.html.gymusage(userData))
     } catch {
-      case _ : Throwable => { println("Uh oh! Could not scrape")
+      case e : Throwable => { e.printStackTrace()
+        println("Uh oh! Could not scrape")
         Ok(views.html.index("Oops! Could not connect to TheGym - please ensure you entered the correct email/pin.")) }
     }
   }
